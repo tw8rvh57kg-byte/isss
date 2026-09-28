@@ -72,7 +72,7 @@
             border-left: 6px solid #ff4757;
             padding: 12px 14px;
             font-size: 0.88rem;
-            line-height: 1.5;
+            line-height: 1.6;
             margin-bottom: 14px;
         }
         .story-title {
@@ -119,18 +119,11 @@
             transform: translate(2px, 2px);
             box-shadow: 0 0 0 #000;
         }
-        .btn-yellow {
-            background-color: #f1e05a;
-            color: #000;
-        }
-        .btn-green {
-            background-color: #2ed573;
-            color: #000;
-        }
+        .btn-yellow { background-color: #f1e05a; color: #000; }
+        .btn-green { background-color: #2ed573; color: #000; }
+        .btn-purple { background-color: #9b59b6; color: #fff; }
 
-        .hidden {
-            display: none !important;
-        }
+        .hidden { display: none !important; }
 
         /* 프로필 및 비밀 카드 */
         .card {
@@ -147,19 +140,14 @@
         .info-block {
             text-align: left;
             background: #0d0e15;
-            padding: 10px 12px;
+            padding: 12px;
             border: 2px solid #3a3f58;
-            font-size: 0.83rem;
-            line-height: 1.5;
+            font-size: 0.85rem;
+            line-height: 1.6;
             margin-top: 8px;
         }
-        .info-block strong {
-            color: #70a1ff;
-        }
-        .secret-text {
-            color: #ff7b72;
-            font-weight: bold;
-        }
+        .info-block strong { color: #70a1ff; }
+        .secret-text { color: #ff7b72; font-weight: bold; }
 
         .is-killer {
             color: #ff4757;
@@ -186,8 +174,28 @@
             display: flex;
             gap: 10px;
         }
-        .btn-row button {
-            flex: 1;
+        .btn-row button { flex: 1; }
+
+        /* 투표 버튼 스타일 */
+        .vote-btn {
+            background-color: #2a2e45;
+            color: #fff;
+            border: 2px solid #70a1ff;
+            padding: 10px;
+            margin-bottom: 8px;
+            text-align: left;
+            width: 100%;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .vote-btn:hover {
+            background-color: #70a1ff;
+            color: #000;
+        }
+        .vote-btn.selected {
+            background-color: #ff4757;
+            color: #fff;
+            border-color: #fff;
         }
     </style>
 </head>
@@ -210,8 +218,8 @@
         <div class="input-group">
             <label>사건 배경 시나리오</label>
             <select id="scenario-select">
-                <option value="0">🩸 1. 블루비치 VIP룸 독살사건</option>
-                <option value="1">❄️ 2. 설산 산장 밀실 살인사건</option>
+                <option value="0">❄️ 1. 설산 산장 밀실 살인사건</option>
+                <option value="1">🩸 2. 블루비치 VIP룸 독살사건</option>
             </select>
         </div>
 
@@ -223,14 +231,14 @@
         <button class="btn-main" onclick="startOverviewStage()">▶ 사건 개요 보기</button>
     </div>
 
-    <!-- 2단계: 사건 개요 및 현장 브리핑 (모두 함께 보는 화면) -->
+    <!-- 2단계: 사건 개요 및 현장 브리핑 -->
     <div id="overview-screen" class="hidden">
         <div class="story-box" id="overview-detail-box"></div>
-        <p style="font-size:0.75rem; color:#a0a7c4; text-align:center;">💡 모든 플레이어가 사건 개요를 함께 숙지해 주세요.</p>
+        <p style="font-size:0.75rem; color:#a0a7c4; text-align:center;">💡 모든 플레이어가 사건 개요와 현장 단서를 함께 숙지해 주세요.</p>
         <button class="btn-main btn-green" onclick="startRoleAssignmentStage()">▶ 개별 비밀 프로필 확인 시작</button>
     </div>
 
-    <!-- 3단계: 개별 역할 및 비밀 확인 화면 (순차 진행) -->
+    <!-- 3단계: 개별 역할 및 비밀 확인 화면 -->
     <div id="role-screen" class="hidden">
         <h3 id="current-player-display" style="text-align:center; color:#70a1ff; margin:0 0 8px 0;"></h3>
         
@@ -244,8 +252,8 @@
                 <div id="killer-status"></div>
                 
                 <div class="info-block">
-                    <strong>[시간대별 상세 동선 & 목격 정황]</strong><br><span id="char-alibi"></span><br><br>
-                    <strong>[나만의 은밀한 비밀]</strong><br><span id="char-secret" class="secret-text"></span>
+                    <strong>[📜 내가 진술할 알리바이 스토리]</strong><br><span id="char-alibi"></span><br><br>
+                    <strong>[🤫 나만의 은밀한 비밀]</strong><br><span id="char-secret" class="secret-text"></span>
                 </div>
             </div>
         </div>
@@ -257,7 +265,17 @@
         </div>
     </div>
 
-    <!-- 4단계: 사건의 전말 공개 -->
+    <!-- 4단계: 투표하기 화면 -->
+    <div id="vote-screen" class="hidden">
+        <div class="story-box">
+            <div class="story-title">🗳️ 범인 지목 투표</div>
+            모든 알리바이와 단서 확인이 끝났습니다. 플레이어들끼리 자유롭게 토론한 뒤, 범인이라고 생각하는 사람을 지목하세요!
+        </div>
+        <div id="vote-options"></div>
+        <button class="btn-main btn-purple" id="reveal-truth-btn" onclick="goToTruthScreen()" style="margin-top:15px;">🔓 사건의 전말 확인하기</button>
+    </div>
+
+    <!-- 5단계: 사건의 전말 공개 -->
     <div id="truth-screen" class="hidden">
         <div class="story-box" style="border-left-color:#9b59b6;">
             <div class="story-title" style="color:#ff4757; text-align:center; font-size:1rem;" id="truth-killer-title"></div>
@@ -271,65 +289,79 @@
 <script>
     const scenarioDatabase = [
         {
-            title: "🩸 블루비치 VIP룸 독살사건",
-            overview: "<b>해변 리조트 3층 VIP룸에서 회장이 와인을 마시던 중 독살당했습니다.</b><br>문은 잠겨있지 않았고 용의자 4명 모두 정해진 시간 동안 피해자의 방 근처를 기웃거렸습니다.",
-            characters: [
-                {
-                    id: "park", roleName: "박파트너 (동업자)",
-                    alibi: "• 21:00~21:20 : 회장실에서 매각 문제로 크게 다툼.<br>• 21:20~21:45 : 복도 끝 화장실에서 담배를 피움.<br>• 21:45~22:00 : 로비에서 이주치의를 마주치고 인사함.",
-                    secret: "회장의 비리를 협박하려고 최지배인 서랍에서 청산가리 병을 몰래 훔쳤으나, 겁이 나서 1층 쓰레기통에 버렸습니다."
-                },
-                {
-                    id: "choi", roleName: "최지배인 (총지배인)",
-                    alibi: "• 21:00~21:15 : VIP룸에 와인을 배달함.<br>• 21:15~21:40 : 2층 비상계단을 서성이다 누군가 계단을 올라가는 발소리를 들음.<br>• 21:40~22:00 : 프런트 카운터로 복귀.",
-                    secret: "공금 유용 장부를 빼돌리기 위해 비상계단으로 몰래 들어가 회장의 서랍 속 장부만 도둑질해 나왔습니다."
-                },
-                {
-                    id: "lee", roleName: "이주치의 (전담의사)",
-                    alibi: "• 21:00~21:10 : 회장에게 혈압약을 전달함.<br>• 21:10~21:45 : 개인 객실에서 불안하게 전화 통화를 함.<br>• 21:45~22:00 : 로비에서 박파트너를 목격함.",
-                    secret: "회장의 협박에 지쳐 약상자에 독약 캡슐을 몰래 만들어 두었으나, 차마 쓰지 못하고 방에 놔두고 나왔습니다."
-                },
-                {
-                    id: "kang", roleName: "강배우자 (회장 아내)",
-                    alibi: "• 21:00~21:30 : 비를 피하며 우산을 쓰고 해변 산책.<br>• 21:30~21:50 : VIP룸 근처 복도를 서성임.<br>• 21:50~22:00 : 개인 객실로 복귀.",
-                    secret: "유언장을 훔치러 갔다가 이주치의가 두고 간 독약 캡슐을 발견하고, 회장의 와인 잔 입구에 캡슐 가루를 바르고 탈출했습니다."
-                }
-            ],
-            truth: {
-                killerId: "kang",
-                title: "범인: 강배우자 (아내)",
-                story: "<b>[범행 동기]</b><br>자신을 배제한 유언장이 작성되었다는 소식을 듣고 살인을 결심했습니다.<br><br><b>[살해 수법 및 은폐]</b><br>21시 35분 유언장을 훔치러 들어갔다가 테이블 위 이주치의의 독약 캡슐을 발견, 와인 잔 입구에 바르고 유언장을 빼돌렸습니다. 박파트너가 버린 독약병 덕분에 다른 용의자들에게 혐의가 쏠렸습니다."
-            }
-        },
-        {
             title: "❄️ 설산 산장 밀실 살인사건",
-            overview: "<b>폭설로 고립된 산장 1층에서 산장 주인이 머리에 둔기를 맞고 숨졌습니다.</b><br>정전이 일어났던 짧은 순간 용의자들의 행적이 엇갈렸습니다.",
+            overview: "<b>폭설로 고립된 산장 거실에서 산장 주인이 머리에 둔기를 맞고 숨진 채 발견되었습니다.</b><br><br>" +
+                      "<b>🔍 현장 브리핑 단서:</b><br>" +
+                      "1. 피해자의 상의 옷깃이 길게 찢어져 있었습니다.<br>" +
+                      "2. 난로 속에서 다 타지 않은 <b>'가죽 장갑 조각'</b>이 발견되었습니다.<br>" +
+                      "3. 주방의 <b>기름때 전용 강력 세제</b>가 바닥에 흘려져 있었습니다.<br>" +
+                      "4. 피해자 머리의 정수리 부근에 네모나고 평평한 함몰 상처가 남아있습니다.",
             characters: [
                 {
-                    id: "kim", roleName: "김산악 (구조대원)",
-                    alibi: "• 22:00~22:30 : 야외 창고에서 제설 장비 점검.<br>• 22:30~22:45 : 2층 복도에서 둔탁한 '쿵' 소리를 들음.<br>• 22:45~23:00 : 휴게실에서 홀로 차를 마심.",
-                    secret: "주인과 따지려고 피 묻은 등산 스틱을 들고 갔으나 이미 쓰러져 있어 당황해 스틱을 난로 뒤에 떨구고 도망쳤습니다."
+                    id: "kim", roleName: "김구조 (산악구조대원)",
+                    alibi: "밤 10시쯤 눈보라가 심해져 창고에서 제설 장비를 점검하고 있었습니다. 10시 반쯤 2층 복도를 지나는데 아래층에서 뭔가 거칠게 다투는 소리와 '북' 하고 옷감 찢어지는 소리가 났습니다. 무서워서 내려가지 못하고 2층 방에서 숨죽이고 있었습니다.",
+                    secret: "주인의 거칠었던 폭언에 화가 나 등산 스틱을 들고 내려갔으나, 이미 사체가 되어 있는 주인을 보고 놀라 등산 스틱만 쥔 채 도로 방으로 도망쳤습니다."
                 },
                 {
-                    id: "lee_doc", roleName: "이약사 (손님)",
-                    alibi: "• 22:00~22:40 : 1층 서재에서 독서.<br>• 22:40~22:50 : 화장실에 다녀오며 꺼져가는 난로 불을 봄.<br>• 22:50~23:00 : 방으로 복귀.",
-                    secret: "차용증을 빼돌리기 위해 주인이 마시던 차에 수면제를 탔고, 주인이 재워지자 난로에 차용증만 태우고 나왔습니다."
+                    id: "lee_doc", roleName: "이약사 (산장 투숙객)",
+                    alibi: "밤 10시 40분쯤 차를 마시러 1층 서재로 내려왔습니다. 난로 불이 희미해져 있길래 장작을 몇 개 더 던져 넣었고, 화장실에 잠시 들렀다가 곧바로 방으로 돌아가 잠에 들었습니다.",
+                    secret: "주인에게 잡힌 거액의 차용증을 태우기 위해 난로에 서류를 던지던 중, 난로 열기에 가죽 장갑 한쪽이 타버려 급히 떼어내느라 탄 조각을 난로에 남겼습니다."
                 },
                 {
-                    id: "park_sub", roleName: "박알바 (스태프)",
-                    alibi: "• 22:00~22:20 : 주방 정리.<br>• 22:20~22:50 : 와인 창고 재고 조사 중 고성을 들음.<br>• 22:50~23:00 : 쓰레기를 치우고 방으로 이동.",
-                    secret: "억울하게 해고당한 분노로 와인 창고의 두꺼운 와인병을 가져와, 수면제에 잠든 주인의 머리를 내려쳐 살해했습니다."
+                    id: "park_sub", roleName: "박알바 (산장 스태프)",
+                    alibi: "밤 10시부터 주방에서 내일 아침 재료를 손질하고 있었습니다. 10시 50분쯤 산장 전체가 순간 정전되었고, 두꺼비집을 올려 전기를 복구한 뒤 쓰레기를 버리고 방으로 올라갔습니다.",
+                    secret: "주인의 억울한 해고 통보에 증오심이 폭발하여, 주방에 있던 묵직한 네모 모양 무쇠 프라이팬으로 쓰러져 있던 주인의 머리를 내려쳤습니다."
                 },
                 {
-                    id: "choi_pro", roleName: "최프로 (선수)",
-                    alibi: "• 22:00~22:35 : 2층 재활실에서 운동.<br>• 22:35~22:50 : 거실 난로 앞에서 주인과 대화.<br>• 22:50~23:00 : 방으로 복귀.",
-                    secret: "도핑 폭로 문제로 주인과 다투다 밀쳐 난로 모서리에 머리를 부딪히게 만들고 놀라 도망쳤습니다. (이때 주인은 기절만 함)"
+                    id: "choi_pro", roleName: "최선수 (전 프로선수)",
+                    alibi: "밤 10시 30분쯤 거실 난로 앞에서 주인과 대화를 나누었습니다. 대화 도중 약간의 언성이 높아지긴 했으나 금방 사과하고 10시 45분쯤 2층 제 방으로 올라왔습니다.",
+                    secret: "도핑 폭로 문제로 주인과 멱살잡이를 하다 옷깃을 찢었고, 주인을 밀쳐 난로 모서리에 머리를 부딪혀 기절하게 만들었습니다. 죽은 줄 알고 놀라 도망쳤으나 시점엔 살아있었습니다."
                 }
             ],
             truth: {
                 killerId: "park_sub",
-                title: "범인: 박알바 (스태프)",
-                story: "<b>[범행 동기]</b><br>일방적인 해고와 폭언에 증오심이 폭발하여 살인을 저질렀습니다.<br><br><b>[살해 수법 및 은폐]</b><br>최프로에게 밀쳐지고 이약사의 수면제에 취해 쓰러져 있던 주인을 와인 창고의 묵직한 와인병으로 내려쳐 즉사시킨 뒤, 와인병을 창고 구석에 은닉했습니다."
+                title: "진범: 박알바 (산장 스태프)",
+                story: "<b>[사건의 전말 & 코난식 트릭 풀이]</b><br><br>" +
+                       "1. <b>상처의 비밀</b>: 최선수가 멱살을 잡고 밀쳐 난로 모서리에 머리를 부딪힌 주인은 기절만 했을 뿐 살아있었습니다.<br><br>" +
+                       "2. <b>스태프의 범행</b>: 기절한 주인을 발견한 박알바는 복수심에 주방의 <b>네모난 무쇠 프라이팬</b>으로 머리를 찍어 살해했습니다. (네모난 함몰 상처의 원인)<br><br>" +
+                       "3. <b>은폐 시도와 허점</b>: 프라이팬에 피와 주방 기름때가 엉키자 강력 세제로 급하게 세척하다 바닥에 흘렸고, 무쇠팬을 아무렇지 않게 주방에 다시 가져다 놓았습니다!"
+            }
+        },
+        {
+            title: "🩸 블루비치 VIP룸 독살사건",
+            overview: "<b>해변 리조트 VIP룸에서 회장이 와인을 마시던 중 독살당했습니다.</b><br><br>" +
+                      "<b>🔍 현장 브리핑 단서:</b><br>" +
+                      "1. 와인 잔 입구 부근에 희미한 캡슐 가루 자국이 남아있습니다.<br>" +
+                      "2. 1층 쓰레기통에서 청산가리가 담겼던 빈 약병이 발견되었습니다.<br>" +
+                      "3. 회장의 서랍장이 열려있었으나 비리 장부만 사라져 있었습니다.",
+            characters: [
+                {
+                    id: "park", roleName: "박파트너 (동업자)",
+                    alibi: "밤 9시쯤 회장실에서 매각 문제로 크게 다투고 나왔습니다. 화가 나서 복도 화장실에서 담배를 피우며 마음을 가라앉힌 뒤, 로비로 내려와 이주치의와 인사를 나누었습니다.",
+                    secret: "회장을 협박하려 최지배인 서랍에서 청산가리 병을 몰래 훔쳤으나, 막상 죽일 용기가 안 나 1층 쓰레기통에 버렸습니다."
+                },
+                {
+                    id: "choi", roleName: "최지배인 (총지배인)",
+                    alibi: "9시 15분쯤 VIP룸에 부탁받은 와인을 배달했습니다. 이후 비상계단 부근을 청소하다 계단을 서둘러 올라가는 발소리를 들었습니다.",
+                    secret: "자신의 공금 유용 장부를 빼돌리기 위해 비상계단으로 몰래 침입해 회장 서랍의 장부만 도둑질해 나왔습니다."
+                },
+                {
+                    id: "lee", roleName: "이주치의 (전담의사)",
+                    alibi: "9시쯤 회장에게 혈압약을 전달한 뒤 개인 객실로 돌아왔습니다. 9시 45분쯤 로비로 내려가다 박파트너를 만났습니다.",
+                    secret: "회장의 협박에 지쳐 독약 캡슐을 몰래 만들어 두었으나 차마 쓰지 못하고 회장 방 테이블 위에 놔두고 나왔습니다."
+                },
+                {
+                    id: "kang", roleName: "강배우자 (회장 아내)",
+                    alibi: "9시 30분쯤 비를 피하며 해변 산책을 하다가 VIP룸 복도를 잠시 서성였고, 9시 50분쯤 객실로 돌아왔습니다.",
+                    secret: "유언장을 훔치러 갔다가 이주치의가 두고 간 독약 캡슐을 발견, 와인 잔 입구에 캡슐 가루를 바르고 탈출했습니다."
+                }
+            ],
+            truth: {
+                killerId: "kang",
+                title: "진범: 강배우자 (아내)",
+                story: "<b>[사건의 전말 & 코난식 트릭 풀이]</b><br><br>" +
+                       "1. <b>독약의 출처</b>: 이주치의가 미처 챙기지 못하고 테이블에 둔 독약 캡슐을 본 강배우자가 와인 잔 입구에 발라 독살했습니다.<br><br>" +
+                       "2. <b>교란 작전</b>: 박파트너가 버린 청산가리 병 때문에 경찰의 수사선상이 청산가리로 쏠렸으나, 실제 독극물은 이주치의의 독약 캡슐이었습니다!"
             }
         }
     ];
@@ -339,6 +371,7 @@
     let assignedRoles = [];
     let currentIndex = 0;
     let isRevealed = false;
+    let selectedSuspectIndex = null;
 
     function startOverviewStage() {
         const p1 = document.getElementById('p1').value.trim();
@@ -361,9 +394,7 @@
             ${currentScenario.overview}
         `;
 
-        // 역할 무작위 지정 (1명만 범인)
-        const killerIndex = Math.floor(Math.random() * 4);
-        assignedRoles = currentScenario.characters.map((char, index) => ({
+        assignedRoles = currentScenario.characters.map((char) => ({
             ...char,
             isKiller: char.id === currentScenario.truth.killerId
         }));
@@ -388,11 +419,7 @@
         document.getElementById('next-btn').classList.add('hidden');
 
         const prevBtn = document.getElementById('prev-player-btn');
-        if (currentIndex === 0) {
-            prevBtn.style.display = 'none';
-        } else {
-            prevBtn.style.display = 'block';
-        }
+        prevBtn.style.display = currentIndex === 0 ? 'none' : 'block';
     }
 
     function toggleRole() {
@@ -411,7 +438,7 @@
                 killerStatus.innerHTML = '<div class="is-innocent">🟢 무고한 용의자입니다.</div>';
             }
 
-            document.getElementById('char-alibi').innerHTML = role.alibi;
+            document.getElementById('char-alibi').innerText = role.alibi;
             document.getElementById('char-secret').innerText = role.secret;
 
             cardPrompt.classList.add('hidden');
@@ -430,15 +457,8 @@
         if (currentIndex < players.length) {
             updateTurn();
         } else {
-            // 모든 확인 종료 -> 사건의 전말 해설로 이동
-            document.getElementById('role-screen').classList.add('hidden');
-            document.getElementById('truth-screen').classList.remove('hidden');
-            
-            const killerPlayerIdx = assignedRoles.findIndex(r => r.isKiller);
-            const killerName = players[killerPlayerIdx];
-
-            document.getElementById('truth-killer-title').innerText = `🩸 ${currentScenario.truth.title} (플레이어: ${killerName})`;
-            document.getElementById('truth-content-box').innerHTML = currentScenario.truth.story;
+            // 모든 확인 종료 -> 투표 화면 이동
+            startVoteStage();
         }
     }
 
@@ -449,9 +469,46 @@
         }
     }
 
+    function startVoteStage() {
+        document.getElementById('role-screen').classList.add('hidden');
+        document.getElementById('vote-screen').classList.remove('hidden');
+
+        const voteOptionsBox = document.getElementById('vote-options');
+        voteOptionsBox.innerHTML = '';
+
+        players.forEach((playerName, idx) => {
+            const role = assignedRoles[idx];
+            const btn = document.createElement('button');
+            btn.className = 'vote-btn';
+            btn.innerHTML = `👉 <b>${playerName}</b> (${role.roleName})`;
+            btn.onclick = () => selectSuspect(idx, btn);
+            voteOptionsBox.appendChild(btn);
+        });
+    }
+
+    function selectSuspect(idx, btnElement) {
+        selectedSuspectIndex = idx;
+        const allBtns = document.querySelectorAll('.vote-btn');
+        allBtns.forEach(b => b.classList.remove('selected'));
+        btnElement.classList.add('selected');
+    }
+
+    function goToTruthScreen() {
+        document.getElementById('vote-screen').classList.add('hidden');
+        document.getElementById('truth-screen').classList.remove('hidden');
+
+        const killerPlayerIdx = assignedRoles.findIndex(r => r.isKiller);
+        const killerPlayerName = players[killerPlayerIdx];
+        const killerRole = assignedRoles[killerPlayerIdx];
+
+        document.getElementById('truth-killer-title').innerHTML = `🕵️‍♂️ ${currentScenario.truth.title}<br><span style="color:#fff; font-size:0.9rem;">(지목된 지목 대상 / 진짜 범인: ${killerPlayerName})</span>`;
+        document.getElementById('truth-content-box').innerHTML = currentScenario.truth.story;
+    }
+
     function resetToHome() {
         document.getElementById('role-screen').classList.add('hidden');
         document.getElementById('overview-screen').classList.add('hidden');
+        document.getElementById('vote-screen').classList.add('hidden');
         document.getElementById('truth-screen').classList.add('hidden');
         document.getElementById('setup-screen').classList.remove('hidden');
         document.getElementById('game-title').innerText = "👾 CRIMESCENE 👾";
