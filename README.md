@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>크라임씬: 해변 리조트 살인사건</title>
+    <title>크라임씬: 블루비치 살인사건</title>
     <style>
         * {
             box-sizing: border-box;
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
         }
         body {
-            background-color: #0f111a;
-            color: #e0e0e0;
+            background-color: #0d1117;
+            color: #c9d1d9;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,30 +20,28 @@
             padding: 20px;
         }
         .container {
-            background-color: #1a1d2e;
+            background-color: #161b22;
             padding: 28px;
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-            max-width: 520px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            max-width: 540px;
             width: 100%;
-            border: 1px solid #2e344e;
+            border: 1px solid #30363d;
         }
         h1 {
             color: #ff4757;
             text-align: center;
             margin-top: 0;
             font-size: 1.6rem;
-            letter-spacing: -0.5px;
         }
         .story-box {
-            background-color: #252a40;
+            background-color: #21262d;
             border-left: 4px solid #ff4757;
             padding: 15px;
             border-radius: 6px;
-            font-size: 0.93rem;
+            font-size: 0.92rem;
             line-height: 1.6;
             margin-bottom: 20px;
-            color: #d1d5db;
         }
         .story-title {
             font-weight: bold;
@@ -52,26 +50,22 @@
             font-size: 1.05rem;
         }
         .input-group {
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
         label {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             font-size: 0.85rem;
-            color: #9ca3af;
+            color: #8b949e;
         }
         input {
             width: 100%;
             padding: 10px 12px;
             border-radius: 8px;
-            border: 1px solid #374151;
-            background-color: #111827;
+            border: 1px solid #30363d;
+            background-color: #0d1117;
             color: #fff;
             font-size: 0.95rem;
-        }
-        input:focus {
-            outline: none;
-            border-color: #ff4757;
         }
         button {
             width: 100%;
@@ -83,17 +77,20 @@
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
+            transition: background 0.2s;
             margin-top: 10px;
         }
         button:hover {
             background-color: #ff6b81;
         }
-        button:active {
-            transform: scale(0.98);
+        .btn-secondary {
+            background-color: #238636;
+        }
+        .btn-secondary:hover {
+            background-color: #2ea043;
         }
         .card {
-            background: #252a40;
+            background: #21262d;
             border: 2px dashed #ff4757;
             border-radius: 12px;
             padding: 24px 20px;
@@ -101,11 +98,7 @@
             text-align: center;
             cursor: pointer;
             user-select: none;
-            min-height: 180px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            min-height: 200px;
         }
         .hidden {
             display: none !important;
@@ -113,57 +106,71 @@
         .role-title {
             font-size: 1.4rem;
             font-weight: bold;
-            color: #ffa502;
+            color: #f1e05a;
             margin-bottom: 8px;
         }
         .is-killer {
             color: #ff4757;
             font-weight: bold;
-            background: #3a0d11;
-            padding: 6px 12px;
+            background: #3c1e1e;
+            padding: 8px 12px;
             border-radius: 6px;
             display: inline-block;
             margin-bottom: 12px;
         }
         .is-innocent {
-            color: #2ed573;
+            color: #2ea043;
             font-weight: bold;
-            background: #0d3a1a;
-            padding: 6px 12px;
+            background: #1e3c23;
+            padding: 8px 12px;
             border-radius: 6px;
             display: inline-block;
             margin-bottom: 12px;
         }
         .info-block {
             text-align: left;
-            width: 100%;
-            background: #1a1d2e;
-            padding: 12px;
+            background: #0d1117;
+            padding: 14px;
             border-radius: 8px;
             font-size: 0.88rem;
-            line-height: 1.5;
+            line-height: 1.6;
             margin-top: 10px;
+            border: 1px solid #30363d;
         }
         .info-block strong {
-            color: #70a1ff;
+            color: #58a6ff;
         }
-        .clue-item {
-            background: #252a40;
-            border: 1px solid #374151;
-            padding: 12px;
+        .secret-text {
+            color: #ff7b72;
+            font-weight: bold;
+        }
+        .clue-box {
+            background: #21262d;
+            border: 1px solid #30363d;
+            padding: 14px;
             border-radius: 8px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-size: 0.9rem;
             line-height: 1.5;
+            text-align: left;
         }
-        .clue-item strong {
-            color: #eccc68;
+        .clue-box strong {
+            color: #f1e05a;
         }
         .notice {
             font-size: 0.8rem;
-            color: #9ca3af;
+            color: #8b949e;
             text-align: center;
             margin-top: 8px;
+        }
+        .round-tag {
+            background: #1f6beb;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -172,43 +179,31 @@
 <div class="container">
     <h1>🩸 크라임씬: 블루비치 살인사건</h1>
 
-    <!-- 1단계: 사건 개요 및 참가자 등록 -->
+    <!-- 1단계: 설정 -->
     <div id="setup-screen">
         <div class="story-box">
             <div class="story-title">📌 사건 개요</div>
-            폭풍우가 치던 밤 10시, 블루비치 리조트 VIP 룸에서 리조트 소유주인 **'김회장(50대)'**이 숨진 채 발견되었습니다. 사망 원인은 독극물 중독.<br>
-            당시 리조트에 있던 4명의 용의자 중 **단 한 명만이 진범**입니다!
+            폭풍우가 치던 밤 10시, 블루비치 리조트 VIP 룸에서 리조트 회장 **'김회장(50대)'**이 숨진 채 발견되었습니다. 사망 원인은 청산가리 중독.<br>
+            현장에 있던 4명의 용의자 중 **단 한 명만이 진범**입니다!
         </div>
 
-        <p style="font-size:0.9rem; color:#aaa; margin-bottom:12px;">용의자 4명의 이름을 입력해 주세요 (4명 필수):</p>
+        <p style="font-size:0.85rem; color:#8b949e; margin-bottom:12px;">참가자 4명의 이름을 입력하세요:</p>
         
-        <div class="input-group">
-            <label>용의자 1 (사업 파트너 역할)</label>
-            <input type="text" id="p1" value="철수">
-        </div>
-        <div class="input-group">
-            <label>용의자 2 (리조트 매니저 역할)</label>
-            <input type="text" id="p2" value="영희">
-        </div>
-        <div class="input-group">
-            <label>용의자 3 (김회장의 주치의 역할)</label>
-            <input type="text" id="p3" value="민수">
-        </div>
-        <div class="input-group">
-            <label>용의자 4 (김회장의 배우자 역할)</label>
-            <input type="text" id="p4" value="지민">
-        </div>
+        <div class="input-group"><label>용의자 1 (박파트너 - 사업 동업자)</label><input type="text" id="p1" value="철수"></div>
+        <div class="input-group"><label>용의자 2 (최지배인 - 리조트 매니저)</label><input type="text" id="p2" value="영희"></div>
+        <div class="input-group"><label>용의자 3 (이주치의 - 개인 의사)</label><input type="text" id="p3" value="민수"></div>
+        <div class="input-group"><label>용의자 4 (강배우자 - 김회장의 아내)</label><input type="text" id="p4" value="지민"></div>
 
-        <button onclick="startGame()">역할 및 시나리오 분배하기</button>
+        <button onclick="startGame()">역할 및 은밀한 시나리오 확인</button>
     </div>
 
-    <!-- 2단계: 개별 비밀 역할 카드 확인 -->
+    <!-- 2단계: 개별 비밀 역할 카드 -->
     <div id="game-screen" class="hidden">
-        <h2 id="current-player-display" style="text-align:center; color:#70a1ff;"></h2>
+        <h2 id="current-player-display" style="text-align:center; color:#58a6ff; margin-bottom:5px;"></h2>
         
         <div class="card" id="role-card" onclick="toggleRole()">
             <div id="card-prompt">
-                🔍 <strong>터치하여 본인의 캐릭터/비밀 확인하기</strong>
+                🔍 <strong>터치하여 본인의 캐릭터/상세 알리바이/치명적 비밀 확인</strong>
             </div>
             
             <div id="card-content" class="hidden">
@@ -217,68 +212,56 @@
                 
                 <div class="info-block">
                     <strong>[인물 배경]</strong> <span id="char-bg"></span><br><br>
-                    <strong>[사건 당일 알리바이 (21:00~22:00)]</strong><br><span id="char-alibi"></span><br><br>
-                    <strong>[나만의 비밀/동기]</strong><br><span id="char-secret"></span>
+                    <strong>[사건 당일 상세 동선 (21:00~22:00)]</strong><br><span id="char-alibi"></span><br><br>
+                    <strong>[나만의 은밀한 비밀 & 동기]</strong><br><span id="char-secret" class="secret-text"></span>
                 </div>
             </div>
         </div>
 
-        <p class="notice">본인의 정보를 숙지한 후 다시 터치하여 숨기고 다음 사람에게 넘겨주세요.</p>
+        <p class="notice">본인의 역할을 확인하고 숙지한 후 다시 터치하여 숨겨주세요.</p>
         <button id="next-btn" onclick="nextPlayer()" class="hidden">확인 완료 (다음 사람에게 넘기기)</button>
     </div>
 
-    <!-- 3단계: 단서 공개 및 토론 화면 -->
-    <div id="result-screen" class="hidden">
-        <h2 style="text-align:center; color:#2ed573;">🕵️ 모든 역할 분배 완료!</h2>
-        <p style="text-align:center; font-size:0.9rem; color:#ccc;">이제 각자 자신의 인물이 되어 자유롭게 알리바이를 주장에 하고 추리하세요.</p>
+    <!-- 3단계: 라운드별 단서 및 진행 화면 -->
+    <div id="board-screen" class="hidden">
+        <div style="text-align:center;">
+            <span id="round-indicator" class="round-tag">ROUND 1</span>
+        </div>
+        <h2 id="round-title" style="text-align:center; margin-top:5px;">1라운드: 현장 조사 및 1차 토론</h2>
         
-        <div class="story-box" style="border-left-color: #eccc68; margin-top:20px;">
-            <div class="story-title">🔍 현장 수사 단서 (모두 함께 보세요)</div>
-            
-            <div class="clue-item">
-                <strong>단서 1. 피해자의 와인 잔</strong><br>
-                김회장의 방에서 발견된 와인 잔에서는 신경독 성분이 검출되었습니다. 와인병은 따져 있었습니다.
-            </div>
-            <div class="clue-item">
-                <strong>단서 2. 찢어진 계약서 조각</strong><br>
-                쓰레기통에서 "지분 인수 계약 파기"라고 적힌 찢어진 서류 조각이 발견되었습니다.
-            </div>
-            <div class="clue-item">
-                <strong>단서 3. CCTV 기록</strong><br>
-                비바람 때문에 복도 CCTV는 먹통이었지만, 밤 9시 30분경 누군가 우산을 쓰고 VIP 룸 쪽으로 걸어가는 모습이 찍혔습니다.
-            </div>
+        <div id="clue-container">
+            <!-- 라운드별 단서가 여기에 동적으로 들어감 -->
         </div>
 
-        <button onclick="resetGame()" style="background-color:#4b6584; margin-top:10px;">새 게임 시작하기</button>
+        <button id="round-btn" onclick="nextRound()" class="btn-secondary">2라운드 단서 공개하기 (심층 수사)</button>
     </div>
 </div>
 
 <script>
-    // 캐릭터 시나리오 데이터베이스 (4개 역할)
     const characterTemplates = [
         {
-            roleName: "박파트너 (사업 파트너)",
-            bg: "김회장과 10년 넘게 리조트를 함께 운영해 온 동업자.",
-            alibi: "밤 9시부터 10시까지 로비 카페에서 서류 작업을 하며 커피를 마시고 있었다.",
-            secret: "최근 김회장이 나 몰래 리조트를 단독 매각하려 했다는 사실을 알고 크게 다퉜다."
+            roleName: "박파트너 (사업 동업자)",
+            bg: "김회장과 10년간 리조트를 공동 운영해 온 야망 있는 사업가.",
+            alibi: "• 21:00~21:30 로비 카페에서 혼자 와인을 마시며 노트북 작업.<br>• 21:30~21:45 1층 화장실에 다녀옴.<br>• 21:45~22:00 로비로 돌아와 주치의(이주치의)와 잠시 대화 후 객실로 이동.",
+            secret: "김회장이 자신을 배신하고 리조트 지분 전체를 해외 펀드에 몰래 넘기려던 정황을 포착했다. 오늘 밤 김회장에게 독설을 퍼부으며 와인 잔을 깨부수고 위협했었다."
         },
         {
-            roleName: "최매니저 (리조트 총지배인)",
-            bg: "리조트의 모든 시설과 고객 관리를 총괄하는 베테랑 지배인.",
-            alibi: "밤 9시 15분쯤 김회장의 요청으로 와인과 와인 오프너를 객실에 가져다주고 곧바로 카운터로 내려왔다.",
-            secret: "리조트 공금을 유용하다 김회장에게 걸려 오늘 아침 해고 통보를 받았다."
+            roleName: "최지배인 (리조트 매니저)",
+            bg: "리조트의 모든 열쇠와 비상통로를 꿰뚫고 있는 꼼꼼한 총지배인.",
+            alibi: "• 21:00~21:20 김회장의 요청으로 고급 와인과 잔을 VIP 룸으로 배달.<br>• 21:20~21:40 비바람 때문에 창문 점검차 3층 복도를 순찰.<br>• 21:40~22:00 카운터에서 직원 일지 작성.",
+            secret: "리조트 공금 3억 원을 유용해 도박으로 날렸다. 김회장이 오늘 밤 감사 자료를 요구했고, 사실이 밝혀지면 감옥에 갈 위기였다. 청산가리를 구해 리조트 수건에 묻혀 보관 중이었다."
         },
         {
             roleName: "이주치의 (개인 의사)",
-            bg: "김회장의 지병을 오래전부터 주치해 온 전담 의사.",
-            alibi: "밤 9시경 김회장에게 주간 건강 정기 처방 약을 전달하고 자신의 투숙객 객실로 돌아가 쉬고 있었다.",
-            secret: "김회장의 막대한 생명보험금 수령인 중 한 명으로 지정되어 있다."
+            bg: "김회장의 지병을 전담하며 심복 역할을 해온 전담 의사.",
+            alibi: "• 21:00~21:15 김회장의 VIP 룸에 들러 정기 처방약(알약)을 전달.<br>• 21:15~21:50 본인 객실에서 정체불명의 전화 통화.<br>• 21:50~22:00 로비에서 박파트너와 마주쳐 인사 나눔.",
+            secret: "김회장의 배우자와 불륜 관계이다. 최근 김회장이 불륜 사실을 눈치채고 나를 의료법 위반으로 매장시키겠다고 협박하여 극도의 불안 상태였다."
         },
         {
-            roleName: "강배우자 (김회장의 배우자)",
-            bg: "김회장과 3년 전 재혼한 연하의 배우자.",
-            alibi: "밤 8시 30분부터 산책을 나갔다가 비가 오기 시작해 9시 40분쯤 객실로 돌아왔다.",
-            secret: "김회장과 외도 문제로 이혼 소송 중이었으며, 위자료를 받지 못할 위기에 처해 있었다."
+            roleName: "강배우자 (김회장의 아내)",
+            bg: "김회장과 재혼한 연하의 배우자. 겉으로는 화려해 보이나 늘 감시당함.",
+            alibi: "• 21:00~21:40 답답해서 우산을 쓰고 리조트 해변 산책로를 걸음.<br>• 21:40~22:00 젖은 옷을 갈아입기 위해 본인 객실로 들어감.",
+            secret: "김회장 몰래 이주치의와 연인 관계를 이어왔다. 김회장이 유언장을 수정해 나에게 유산을 한 푼도 남기지 않으려 한다는 것을 알고 오늘 밤 유언장 원본을 몰래 훔쳐냈다."
         }
     ];
 
@@ -286,6 +269,7 @@
     let assignedRoles = [];
     let currentIndex = 0;
     let isRevealed = false;
+    let currentRound = 1;
 
     function startGame() {
         const p1 = document.getElementById('p1').value.trim();
@@ -294,24 +278,18 @@
         const p4 = document.getElementById('p4').value.trim();
 
         if (!p1 || !p2 || !p3 || !p4) {
-            alert('4명의 용의자 이름을 모두 입력해 주세요.');
+            alert('4명의 참가자 이름을 모두 입력하세요.');
             return;
         }
 
         players = [p1, p2, p3, p4];
-
-        // 범인 무작위 선정 (0~3 중 하나)
         const killerIndex = Math.floor(Math.random() * 4);
 
-        // 역할 조합 생성
-        assignedRoles = characterTemplates.map((char, index) => {
-            return {
-                ...char,
-                isKiller: index === killerIndex
-            };
-        });
+        assignedRoles = characterTemplates.map((char, index) => ({
+            ...char,
+            isKiller: index === killerIndex
+        }));
 
-        // 플레이어 순서 및 역할 섞기 (랜덤 지정)
         assignedRoles.sort(() => Math.random() - 0.5);
 
         currentIndex = 0;
@@ -336,18 +314,17 @@
 
         if (!isRevealed) {
             const role = assignedRoles[currentIndex];
-            
             document.getElementById('char-name').innerText = role.roleName;
             
             const killerStatus = document.getElementById('killer-status');
             if (role.isKiller) {
-                killerStatus.innerHTML = '<div class="is-killer">🚨 당신은 범인(살인자)입니다!</div><br><small style="color:#ff6b81;">당신의 목표는 다른 사람들에게 정체를 숨기고, 거짓 알리바이로 혐의를 벗는 것입니다.</small>';
+                killerStatus.innerHTML = '<div class="is-killer">🚨 당신은 진범입니다!</div><br><small style="color:#ff7b72;">자신의 비밀과 거짓 알리바이를 조화롭게 섞어 다른 사람에게 죄를 뒤집어씌우세요.</small>';
             } else {
-                killerStatus.innerHTML = '<div class="is-innocent">🟢 당신은 무고한 용의자입니다.</div><br><small style="color:#2ed573;">당신의 목표는 진범이 누구인지 진실을 파헤치는 것입니다.</small>';
+                killerStatus.innerHTML = '<div class="is-innocent">🟢 당신은 무고한 용의자입니다.</div><br><small style="color:#7ee787;">은밀한 비밀은 숨기되, 알리바이의 모순을 찾아 범인을 밝혀내세요.</small>';
             }
 
             document.getElementById('char-bg').innerText = role.bg;
-            document.getElementById('char-alibi').innerText = role.alibi;
+            document.getElementById('char-alibi').innerHTML = role.alibi;
             document.getElementById('char-secret').innerText = role.secret;
 
             cardPrompt.classList.add('hidden');
@@ -367,13 +344,76 @@
             updateTurn();
         } else {
             document.getElementById('game-screen').classList.add('hidden');
-            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('board-screen').classList.remove('hidden');
+            renderRound();
         }
     }
 
-    function resetGame() {
-        document.getElementById('result-screen').classList.add('hidden');
-        document.getElementById('setup-screen').classList.remove('hidden');
+    function renderRound() {
+        const container = document.getElementById('clue-container');
+        const roundTag = document.getElementById('round-indicator');
+        const roundTitle = document.getElementById('round-title');
+        const roundBtn = document.getElementById('round-btn');
+
+        if (currentRound === 1) {
+            roundTag.innerText = "ROUND 1";
+            roundTitle.innerText = "1라운드: 현장 조사 및 알리바이 검증";
+            container.innerHTML = `
+                <div class="clue-box">
+                    <strong>🔍 단서 1. 피해자의 와인 잔</strong><br>
+                    김회장이 마신 와인 잔에서 청산가리가 검출되었습니다. 와인병은 따져 있었으나 병 자체에는 독약이 없었습니다. (잔에만 독이 묻어있었음)
+                </div>
+                <div class="clue-box">
+                    <strong>🔍 단서 2. 찢어진 종이 조각</strong><br>
+                    VIP 룸 쓰레기통에서 "지분 인수 계약 파기 - 박..."이라고 적힌 찢어진 서류 조각이 발견되었습니다.
+                </div>
+                <div class="clue-box">
+                    <strong>🔍 단서 3. 젖은 우산</strong><br>
+                    VIP 룸 입구 신발장에서 젖어 있는 검은색 우산 하나가 발견되었습니다.
+                </div>
+            `;
+            roundBtn.innerText = "2라운드 단서 공개하기 (심층 수사)";
+        } else if (currentRound === 2) {
+            roundTag.innerText = "ROUND 2";
+            roundTitle.innerText = "2라운드: 결정적 심층 단서 공개";
+            container.innerHTML = `
+                <div class="clue-box" style="border-color:#ff7b72;">
+                    <strong>🚨 심층 단서 A. 시신의 상태 (사망 추정시각 21:20~21:40)</strong><br>
+                    부검 결과 독극물은 와인 잔이 아닌 **와인 오프너 손잡이**와 **처방약 캡슐 내부** 중 한 곳에 직접 도포되었을 가능성이 제기되었습니다.
+                </div>
+                <div class="clue-box" style="border-color:#ff7b72;">
+                    <strong>🚨 심층 단서 B. 비밀 편지</strong><br>
+                    김회장의 침대 밑에서 발견된 편지: "당신과 의사의 관계를 알고 있다. 오늘 밤 모든 것을 끝내겠다."
+                </div>
+                <div class="clue-box" style="border-color:#ff7b72;">
+                    <strong>🚨 심층 단서 C. CCTV 복원 기록</strong><br>
+                    21시 30분경, 누군가 VIP 룸 비상계단 문을 열고 들어가는 장면이 찍혔습니다. 그 인물은 **지배인 전용 키카드**를 사용했습니다.
+                </div>
+            `;
+            roundBtn.innerText = "최종 지목 및 투표 단계로 이동";
+            roundBtn.style.backgroundColor = "#ff4757";
+        } else if (currentRound === 3) {
+            roundTag.innerText = "FINAL ROUND";
+            roundTitle.innerText = "3라운드: 최종 범인 지목 및 투표";
+            container.innerHTML = `
+                <div class="story-box" style="border-left-color:#f1e05a; text-align:center;">
+                    <div class="story-title">⚖️ 투표 및 토론 마무리</div>
+                    모든 단서가 공개되었습니다.<br>
+                    서로의 알리바이 허점과 정황 증거를 바탕으로 토론을 마치고, **동시에 범인을 지목**하세요!
+                </div>
+            `;
+            roundBtn.innerText = "새 게임 시작하기";
+            roundBtn.style.backgroundColor = "#21262d";
+        }
+    }
+
+    function nextRound() {
+        if (currentRound < 3) {
+            currentRound++;
+            renderRound();
+        } else {
+            location.reload(); // 새 게임 리셋
+        }
     }
 </script>
 
