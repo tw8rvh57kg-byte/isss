@@ -1,1 +1,246 @@
 # isss
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>추리게임 역할 분배기</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+        }
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #ff5252;
+            margin-bottom: 24px;
+            font-size: 1.8rem;
+        }
+        .input-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid #333;
+            background-color: #2a2a2a;
+            color: #fff;
+            font-size: 1rem;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #ff5252;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background-color: #ff5252;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #ff1744;
+        }
+        .card {
+            background: #2a2a2a;
+            border: 2px dashed #ff5252;
+            border-radius: 8px;
+            padding: 30px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .hidden {
+            display: none;
+        }
+        .role-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .role-mafia { color: #ff5252; }
+        .role-citizen { color: #4caf50; }
+        .notice {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🕵️ 추리게임 역할 분배기</h1>
+
+    <!-- 1단계: 설정 화면 -->
+    <div id="setup-screen">
+        <div class="input-group">
+            <label for="player-names">참가자 이름 (쉼표로 구분)</label>
+            <input type="text" id="player-names" placeholder="예: 철수, 영희, 민수, 지민, 수빈">
+        </div>
+        <div class="input-group">
+            <label for="mafia-count">범인(마피아) 수</label>
+            <input type="number" id="mafia-count" value="1" min="1">
+        </div>
+        <button onclick="startGame()">게임 시작 / 역할 분배</button>
+    </div>
+
+    <!-- 2단계: 카드 확인 화면 -->
+    <div id="game-screen" class="hidden">
+        <h2 id="current-player-display"></h2>
+        <div class="card" id="role-card" onclick="toggleRole()">
+            <div id="card-prompt">👉 터치하여 역할 확인하기</div>
+            <div id="card-content" class="hidden">
+                <div id="role-name" class="role-title"></div>
+                <div id="role-desc"></div>
+            </div>
+        </div>
+        <p class="notice">본인의 역할을 확인한 후 다시 터치하여 숨기고 다음 사람에게 넘겨주세요.</p>
+        <button id="next-btn" onclick="nextPlayer()" class="hidden">다음 사람에게 넘기기</button>
+    </div>
+
+    <!-- 3단계: 완료 화면 -->
+    <div id="result-screen" class="hidden">
+        <h2>🎭 역할 분배 완료!</h2>
+        <p>모든 플레이어가 역할을 확인했습니다.</p>
+        <p>추리를 시작하세요!</p>
+        <button onclick="resetGame()">새 게임 설정하기</button>
+    </div>
+</div>
+
+<script>
+    let players = [];
+    let roles = [];
+    let currentIndex = 0;
+    let isRoleRevealed = false;
+
+    function startGame() {
+        const nameInput = document.getElementById('player-names').value.trim();
+        const mafiaCount = parseInt(document.getElementById('mafia-count').value);
+
+        if (!nameInput) {
+            alert('참가자 이름을 입력해 주세요.');
+            return;
+        }
+
+        players = nameInput.split(',').map(name => name.trim()).filter(name => name !== '');
+        
+        if (players.length < 3) {
+            alert('최소 3명 이상의 참가자가 필요합니다.');
+            return;
+        }
+
+        if (mafiaCount >= players.length) {
+            alert('범인 수는 전체 참가자 수보다 적어야 합니다.');
+            return;
+        }
+
+        if (mafiaCount < 1) {
+            alert('범인은 최소 1명 이상이어야 합니다.');
+            return;
+        }
+
+        // 역할 생성 및 셔플
+        roles = [];
+        for (let i = 0; i < mafiaCount; i++) roles.push('범인');
+        while (roles.length < players.length) roles.push('시민');
+        
+        roles.sort(() => Math.random() - 0.5); // 랜더마이징
+
+        currentIndex = 0;
+        document.getElementById('setup-screen').classList.add('hidden');
+        document.getElementById('game-screen').classList.remove('hidden');
+        
+        updatePlayerTurn();
+    }
+
+    function updatePlayerTurn() {
+        isRoleRevealed = false;
+        document.getElementById('current-player-display').innerText = `👤 ${players[currentIndex]} 님의 차례`;
+        document.getElementById('card-prompt').classList.remove('hidden');
+        document.getElementById('card-content').classList.add('hidden');
+        document.getElementById('next-btn').classList.add('hidden');
+    }
+
+    function toggleRole() {
+        const cardPrompt = document.getElementById('card-prompt');
+        const cardContent = document.getElementById('card-content');
+        const roleName = document.getElementById('role-name');
+        const roleDesc = document.getElementById('role-desc');
+        const nextBtn = document.getElementById('next-btn');
+
+        if (!isRoleRevealed) {
+            // 역할 공개
+            const currentRole = roles[currentIndex];
+            roleName.innerText = currentRole;
+            
+            if (currentRole === '범인') {
+                roleName.className = 'role-title role-mafia';
+                roleDesc.innerText = '당신은 범인입니다. 정체를 숨기고 시민들을 속이세요!';
+            } else {
+                roleName.className = 'role-title role-citizen';
+                roleDesc.innerText = '당신은 시민입니다. 대화를 통해 범인을 찾아내세요!';
+            }
+
+            cardPrompt.classList.add('hidden');
+            cardContent.classList.remove('hidden');
+            nextBtn.classList.remove('hidden');
+            isRoleRevealed = true;
+        } else {
+            // 역할 다시 숨기기
+            cardPrompt.classList.remove('hidden');
+            cardContent.classList.add('hidden');
+            isRoleRevealed = false;
+        }
+    }
+
+    function nextPlayer() {
+        currentIndex++;
+        if (currentIndex < players.length) {
+            updatePlayerTurn();
+        } else {
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+        }
+    }
+
+    function resetGame() {
+        document.getElementById('result-screen').classList.add('hidden');
+        document.getElementById('setup-screen').classList.remove('hidden');
+    }
+</script>
+
+</body>
+</html>
